@@ -16,28 +16,13 @@
     </script>
   </head>
   <body>
-  <h1>Embedded Sage Cells</h1>
-
-  <h2>Factorial</h2>
-  Click the “Activate” button below to calculate factorials.
-    <div id="mycell"><script type="text/x-sage">
-@interact
-def _(a=(1, 10)):
-    print(factorial(a))
- </script>
-</div>
-
-<h2>Your own computations</h2>
-Type your own Sage computation below and click “Evaluate”.
-    <div class="compute"><script type="text/x-sage">plot(sin(x), (x,
-0, 2*pi))</script></div>
-    <div class="compute"><script type="text/x-sage">
-@interact
-def f(n=(0,10)):
-    print(2^n)
-</script></div>
+  <h1>Interactive 2d and 3d graphs of $G_t(\lambda)$</h1>
 
 <h2>3d graph of $G_t(\lambda)$</h2>
+<p>Renders a 3d graph of $G_t(\lambda)$ for $2/3 < t < 4$ and $0 < \lambda < 5/2$ with different colours to resemble the different
+    domains over which $G_t(\lambda)$ can be defined as a peice-wise function. You can drag the graph with your mouse to view
+    it from different angles.</p>
+
 Click “Evaluate”.
     <div class="compute"><script type="text/x-sage">
 var('t,x')
@@ -109,6 +94,12 @@ show(GE1+GE2 + GF1+GF2+GF3 +GD1+GD2+GD3+GD4+GD5)
     </script></div>
 
 <h2>2d graph of $G_t(\lambda)$</h2>
+<p>Renders a $2d$ graph of $G_t(\lambda)$ for a fixed $t$, with a graph of numerical data for $G^*_{t,J}(\lambda)$ superimposed 
+    on top. You can drag the sliders to choose $t$
+    anywhere in the range $[0.025, 3]$ (if $t < 2/3$ then $e^{-\lambda}$ will show instead of $G_t(\lambda)$), and $J$ anywhere
+    in the range $[20,300]$. There is also a slider to translate $G^*_{t,J}(\lambda)$ up or down, which by default is set to translate up
+    by 0.04 in order to make it more distinguishable.</p>
+
 Click “Evaluate”.
     <div class="compute"><script type="text/x-sage">
 ## Bounds Left-Right, and the set of points
@@ -215,13 +206,13 @@ def GlambdaSquare(t,J):
 
 
 ###################################################
-def DrawGlambdaSquares(G):
+def DrawGlambdaSquares(G,uup):
     '''
     G is a list of lists [l,G(l)] to be drawn
     line(G, rgbcolor=(1/2,1/4,1))
     '''
     pinkk = (1,20/255,147/255)
-    uup =0.04 # draw the graph translated up by upp, just to be distinguishable
+    #uup =0.04 # draw the graph translated up by upp, just to be distinguishable
     ## add only uup/2 above an [x,0] to deal with the optical ilusion/expectation
     GG = []
     for [x,y] in G:
@@ -244,7 +235,7 @@ J=24
 # print("t=%.4f, J=%s"%(t,J))
 print(66*"-")
 # print(Glambda(t,p))
-GE = DrawGlambdaSquares(GlambdaSquare(t,J))  
+GE = DrawGlambdaSquares(GlambdaSquare(t,J),0.04)  
 
 b = 2/t
 ET1 = 1-x*t/2 # Theoretical graph
@@ -257,7 +248,7 @@ GT2 = plot(ET2,(x,b,b+0.32), rgbcolor=(0.6,0,0),zorder=1, plot_points=1800, thic
 
 ####################################################
 ## Draw combined for all t> 2/3
-def TogetherSquare(t,J):
+def TogetherSquare(t,J,uup):
     '''
     Draw interactive-also Glambda -green for lattice points in the square/
     centered at origin, NE corner (J,J)
@@ -268,7 +259,7 @@ def TogetherSquare(t,J):
     GIT1, GIT2 and GIT3 are the values of the limit Glambda for 1<t<2
     GIIT1, GIIT2, GIIT3, GIIT4, GIIT5 are the values of the limit Glambda for 2/3<t<1
     '''
-    GE = DrawGlambdaSquares(GlambdaSquare(t,J))  
+    GE = DrawGlambdaSquares(GlambdaSquare(t,J),uup)  
     tkn = 3 # thickness of graphs
     ########################
 #     Glambda for 2<t
@@ -356,7 +347,7 @@ def TogetherSquare(t,J):
             horizontal_alignment = "left")
     ##########################
     
-    GE = DrawGlambdaSquares(GlambdaSquare(t,J)) 
+    GE = DrawGlambdaSquares(GlambdaSquare(t,J),uup) 
     if t>= 2:
 #         T = text('$t=%.2f$'%t_label, (b+0.2, 0.755), color='black', fontsize=12,\
 #             bounding_box={'boxstyle':'square', 'fc':'w', 'ec':"gray"})
@@ -405,7 +396,7 @@ J=40; t=0.87
 # J=100; t=1.7
 
 print("t=%.4f, 1/J=%.5f, J=%s"%(t,1/J, J))
-TogetherSquare(t,J)
+TogetherSquare(t,J,0.04)
 
 ### Interactive
 
@@ -414,12 +405,17 @@ TogetherSquare(t,J)
 # For smaller $J$ is faster.
 
 # J=120 # try
+#@interact
+#def _(t=slider(1/J, 3.0, step_size=0.001, default=1.1), auto_update=false):
+#    @interact
+#    def _(J=slider(20, 300, step_size=2, default=50), auto_update=false):
+#        print("t=%.2f, J=%s"%(t,J))
+#        TogetherSquare(t,J) 
+
 @interact
-def _(t=slider(1/J, 3.0, step_size=0.001, default=1.1), auto_update=false):
-    @interact
-    def _(J=slider(20, 300, step_size=2, default=50), auto_update=false):
-        print("t=%.2f, J=%s"%(t,J))
-        TogetherSquare(t,J)      
+def _(t=slider(1/J, 3.0, step_size=0.001, default=1.1), J=slider(20, 300, step_size=2, default=50), translation=slider(-0.1, 0.1, step_size=0.005, default=0.04), auto_update=false):
+    print("t=%.2f, J=%s, translation=%.3f"%(t,J,translation))
+    TogetherSquare(t,J,translation)
 </script></div>
     
 
