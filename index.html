@@ -14,6 +14,11 @@
     sagecell.makeSagecell({inputLocation: 'div.compute',
                            evalButtonText: 'Evaluate'});
     </script>
+    <style>
+        body {
+            zoom: 85%;
+        }
+    </style>
   </head>
   <body>
   <h1>Interactive 2d and 3d graphs of $G_t(\lambda)$</h1>
@@ -94,7 +99,7 @@ show(GE1+GE2 + GF1+GF2+GF3 +GD1+GD2+GD3+GD4+GD5)
     </script></div>
 
 <h2>2d graph of $G_t(\lambda)$</h2>
-<p>Renders a $2d$ graph of $G_t(\lambda)$ for a fixed $t$, with a graph of numerical data for $G^*_{t,J}(\lambda)$ superimposed 
+<p>Renders a 2d graph of $G_t(\lambda)$ for a fixed $t$, with a graph of numerical data for $G^*_{t,J}(\lambda)$ superimposed 
     on top. You can drag the sliders to choose $t$
     anywhere in the range $[0.025, 3]$ (if $t < 2/3$ then $e^{-\lambda}$ will show instead of $G_t(\lambda)$), and $J$ anywhere
     in the range $[20,300]$. There is also a slider to translate $G^*_{t,J}(\lambda)$ up or down, which by default is set to translate up
