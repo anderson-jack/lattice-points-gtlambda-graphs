@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>SageMathCell</title>
+    <title>Interactive Graphs</title>
     <script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script>
     <script>
     // Make the div with id 'mycell' a Sage cell
@@ -102,8 +102,8 @@ show(GE1+GE2 + GF1+GF2+GF3 +GD1+GD2+GD3+GD4+GD5)
 <p>Renders a 2d graph of $G_t(\lambda)$ for a fixed $t$, with a graph of numerical data for $G^*_{t,J}(\lambda)$ superimposed 
     on top. You can drag the sliders to choose $t$
     anywhere in the range $[0.025, 3]$ (if $t < 2/3$ then $e^{-\lambda}$ will show instead of $G_t(\lambda)$), and $J$ anywhere
-    in the range $[20,300]$. There is also a slider to translate $G^*_{t,J}(\lambda)$ up or down, which by default is set to translate up
-    by 0.04 in order to make it more distinguishable.</p>
+    in the range $[20,300]$. There is also a slider to translate the graph of $G^*_{t,J}(\lambda)$ up or down, which by default is set to translate up
+    by 0.04 in order to distinguish it from $G_t(\lambda)$.</p>
 
 Click “Evaluate”.
     <div class="compute"><script type="text/x-sage">
@@ -238,7 +238,6 @@ def DrawGlambdaSquares(G,uup):
 t=2.15
 J=24
 # print("t=%.4f, J=%s"%(t,J))
-print(66*"-")
 # print(Glambda(t,p))
 GE = DrawGlambdaSquares(GlambdaSquare(t,J),0.04)  
 
@@ -373,7 +372,7 @@ def TogetherSquare(t,J,uup):
     if t<2/3:
         AALL = GE+GEML+T+TJ
 
-    show(AALL, axes=False,frame=True, xmax=2.5, #xmax=b+0.32,\
+    show(AALL, axes=False,frame=True, xmax=3, #xmax=b+0.32,\
          axes_labels=[r'$\lambda$',r'$G_t(\lambda);\quad G^{*}_{t,J}(\lambda)$'],\
         axes_labels_size=1.3, figsize=8) #axes_labels_size=1.6 default
 
@@ -400,22 +399,8 @@ J=20; t=5 # change xmax to 0.5, or so
 J=40; t=0.87
 # J=100; t=1.7
 
-print("t=%.4f, 1/J=%.5f, J=%s"%(t,1/J, J))
-TogetherSquare(t,J,0.04)
-
 ### Interactive
-
-# Run the previious cell, first.
-# Change the initial values if you need. 
 # For smaller $J$ is faster.
-
-# J=120 # try
-#@interact
-#def _(t=slider(1/J, 3.0, step_size=0.001, default=1.1), auto_update=false):
-#    @interact
-#    def _(J=slider(20, 300, step_size=2, default=50), auto_update=false):
-#        print("t=%.2f, J=%s"%(t,J))
-#        TogetherSquare(t,J) 
 
 @interact
 def _(t=slider(1/J, 3.0, step_size=0.001, default=1.1), J=slider(20, 300, step_size=2, default=50), translation=slider(-0.1, 0.1, step_size=0.005, default=0.04), auto_update=false):
