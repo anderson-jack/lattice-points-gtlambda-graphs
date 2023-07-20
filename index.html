@@ -21,11 +21,11 @@
     </style>
   </head>
   <body>
-  <h1>Interactive 2d and 3d graphs of $G_t(\lambda)$</h1>
+  <h1>Interactive 2d and 3d graphs of $G_t(\lambda)$ and $g_t(\lambda)$</h1>
 
 <h2>3d graph of $G_t(\lambda)$</h2>
 <p>Renders a 3d graph of $G_t(\lambda)$ for $2/3 < t < 4$ and $0 < \lambda < 5/2$ with different colours to resemble the different
-    domains over which $G_t(\lambda)$ can be defined as a peice-wise function. You can drag the graph with your mouse to view
+    domains over which $G_t(\lambda)$ can be defined as a piece-wise function. You can drag the graph with your mouse to view
     it from different angles.</p>
 
 Click “Evaluate”.
@@ -224,7 +224,7 @@ def DrawGlambdaSquares(G,uup):
         if y>0:
             GG.append([x,y+uup])
         else:
-            GG.append([x,y+uup/4])
+            GG.append([x,y+uup])
     Punctele = line(GG,rgbcolor=pinkk, thickness=2,\
                        legend_label=r'$G^{*}_{t,J}(\lambda)$',\
                     #marker ="*",markersize =1.6,
@@ -329,7 +329,7 @@ def TogetherSquare(t,J,uup):
     GIIT4 = plot(IIT4,(x,h3,h4), rgbcolor=COL[5],zorder=1, plot_points=1800, \
                 thickness=tkn,
         legend_label = \
-    r'$G(\lambda)=-1 -2t +\frac{1}{2}\lambda t +\lambda t^2 -t(2+\lambda/2)\log(\lambda t/2)\qquad\qquad\qquad\qquad\  \mathrm{if}\ \frac{1}{t}\leq \lambda\leq 2$') 
+    r'$G_t(\lambda)=-1 -2t +\frac{1}{2}\lambda t +\lambda t^2 -t(2+\lambda/2)\log(\lambda t/2)\qquad\qquad\qquad\qquad\  \mathrm{if}\ \frac{1}{t}\leq \lambda\leq 2$') 
     GIIT5 = plot(IIT5,(x,h4,bmax), rgbcolor=COL[3],zorder=1, plot_points=1800, \
                 thickness=tkn,
         legend_label = \
@@ -407,8 +407,235 @@ def _(t=slider(1/J, 3.0, step_size=0.001, default=1.1), J=slider(20, 300, step_s
     print("t=%.2f, J=%s, translation=%.3f"%(t,J,translation))
     TogetherSquare(t,J,translation)
 </script></div>
-    
 
+<h2>3d graph of $g_t(\lambda)$</h2>
+<p>Renders a 3d graph of $g_t(\lambda)$ for $2/3 < t < 4$ and $0 < \lambda < 5/2$ with different colours to resemble the different
+    domains over which $g_t(\lambda)$ can be defined as a piece-wise function. You can drag the graph with your mouse to view
+    it from different angles.</p>
+
+Click “Evaluate”.
+<div class="compute"><script type="text/x-sage">
+var('t,x')
+pp = 10
+ppp = 150
+pppp = 2400; eps = 0.001
+pppp = 560; eps = 0.1
+
+
+T=4; X=2.5
+range_t_a = (t, 2, T)
+range_x_a = (x, 0, X)
+
+range_t_b = (t, 1, 2)
+range_x_b = (x, 0, X)
+b1 = 2/t 
+b2 = 1
+
+range_t_c = (t, 2/3, 1)
+range_x_c = (x, 0, X)
+c1 = 1/t 
+c2 = 2
+c3 = 2/t
+
+EP1 = 1 - x*t/2
+EP2 = 0
+gEP1 = -diff(EP1,x)
+gEP2 = -diff(EP2,x)
+
+FP1 = 1 + x*t/2 - x*t*log(2/t) - x*t^2/2
+FP2 = 1 - x*t/2 - x*t*log(2/x/t) - x*t^2/2 + t
+FP3 = 0
+gFP1 = -diff(FP1,x)
+gFP2 = -diff(FP2,x)
+gFP3 = -diff(FP3,x)
+
+DP1 = 1 +x*t -x*t^2 +3/2*x*t*log(t) - x*t*log(2)
+DP2 = 1 +5*t -4*x*t -x*t^2 +t*(2+3*x)*log(x) +3/2*x*t*log(t) -x*t*log(2)
+DP3 = -1 +3*t -2*x*t +x*t^2 +x*t*log(x/2) -t*(2+x/2)*log(t) 
+DP4 = -1 -2*t +x*t/2 +x*t^2 -t*(2+x/2)*log(x*t/2)
+DP5 = 0
+gDP1 = -diff(DP1,x)
+gDP2 = -diff(DP2,x)
+gDP3 = -diff(DP3,x)
+gDP4 = -diff(DP4,x)
+gDP5 = -diff(DP5,x)
+
+
+gGE1 = plot3d(gEP1, range_t_a, range_x_a, color="cyan", plot_points=pp)
+gGE1 = gGE1.add_condition(lambda t,x,z: 0<=x<=2/t and 2<=t<=T)
+gGE2 = plot3d(gEP2, range_t_a, range_x_a, color="blue", plot_points=pp)
+gGE2 = gGE2.add_condition(lambda t,x,z: 2<=t<=T and 2/t<=x<=X)
+
+gGF1 = plot3d(gFP1, range_t_b, range_x_b, color="red", plot_points=ppp)
+gGF1 = gGF1.add_condition(lambda t,x,z: 0<=x<=1 and 1<=t<=2)
+gGF2 = plot3d(gFP2, range_t_b, range_x_b, color="green", plot_points=ppp)
+gGF2 = gGF2.add_condition(lambda t,x,z: 1<= x<= 2/t and 1<=t<=2)
+gGF3 = plot3d(gFP3, range_t_b, range_x_b, color="magenta", plot_points=pp)
+gGF3 = gGF3.add_condition(lambda t,x,z: 2/t<=x and 1<=t<=2)
+
+COL =[(46/51, 35/51, 5/17), \
+        (4/17, 16/17, 6/17), (1, 15/17, 5/51), \
+        (0, 26/51, 40/51), (49/51, 26/51, 16/85), (29/51, 2/17, 12/17),\
+        (14/51, 16/17, 16/17)]
+gGD1 = plot3d(gDP1, range_t_c, range_x_c, rgbcolor=COL[0], plot_points=ppp)
+gGD1 = gGD1.add_condition(lambda t,x,z: 0<=x<=1 and 2/3<=t<=1)
+gGD2 = plot3d(gDP2, range_t_c, range_x_c, rgbcolor=COL[1], plot_points=ppp)
+gGD2 = gGD2.add_condition(lambda t,x,z: 1<=x<=1/t and 2/3<=t<=1)
+gGD3 = plot3d(gDP3, range_t_c, range_x_c, rgbcolor=COL[2], plot_points=ppp)
+gGD3 = gGD3.add_condition(lambda t,x,z: 1/t<=x<=2 and 2/3<=t<=1)
+gGD4 = plot3d(gDP4, range_t_c, range_x_c, rgbcolor=COL[5], plot_points=ppp)
+gGD4 = gGD4.add_condition(lambda t,x,z: 2<=x<=2/t and 2/3<=t<=1)
+gGD5 = plot3d(gDP5, range_t_c, range_x_c, rgbcolor=COL[3], plot_points=ppp)
+gGD5 = gGD5.add_condition(lambda t,x,z: 2/t<=x and 2/3<=t<=1)
+
+## on the boundaries
+bb29 = parametric_plot3d([t, 2/t, t/4], (t, 2, T), color = (0.0,0.25,0.62), 
+                            thickness=2) 
+bb12 = parametric_plot3d([t, 2/t, t^2/4-t/4], (t, 1, 2), color = (.5,.5,0.2), 
+                            thickness=2) 
+
+show(gGE1+gGE2 + gGF1+gGF2+gGF3 +gGD1+gGD2+gGD3+gGD4+gGD5 +bb12 +bb29)
+# show(GE1+GE2 + GF1+GF2+GF3 +GD1+GD2+GD3+GD4+GD5, aspect_ratio=(1,0.57,1))    
+
+</script></div>
+
+<h2>2d graph of $g_t(\lambda)$</h2>
+<p>Renders a 2d graph of $g_t(\lambda)$ for a fixed $t$. You can drag the slider to choose $t$
+    anywhere in the range $[0.67, 3]$.</p>
+
+Click “Evaluate”.
+<div class="compute"><script type="text/x-sage">
+####################################################
+## Draw combined for all t> 2/3
+def TogetherSquare(t):
+    tkn = 3 # thickness of graphs
+    ########################
+#     Glambda for 2<t
+    b = 2/t
+    t_label = t
+    bmax = b + 0.32 # xmax
+    bmax = 10
+    ET1 = 1-x*t/2 # Theoretical graph
+    gET1 = -diff(ET1, x)
+    ET2 = 0 # Theoretical graph
+    gET2 = -diff(ET2, x)
     
-  </body>
+    GT1 = plot(gET1,(x,0,b), color="cyan",zorder=1, plot_points=1800, \
+                thickness=tkn,\
+                legend_label = r'$g_t(\lambda)=\frac{1}{2}t\qquad \  \mathrm{if}\ 0\leq \lambda< 2/t$')
+
+    GP = point((b,t/4), color=(0.0,0.25,0.62) , legend_label = r'$g_t(\lambda) = \frac{1}{4}t \qquad \ \mathrm{if}\ \lambda=2/t$')
+
+    GT2 = plot(gET2,(x,b,bmax), color="blue",zorder=1, plot_points=1800, \
+                thickness=tkn,
+#               legend_label='$G_J(t,\\lambda)=1-t\\lambda/2$')
+            legend_label = r'$g_t(\lambda)=0\qquad\ \  \mathrm{if}\  2/t< \lambda$')
+#      you need an "r" before the string so nothing in it is escaped by Python
+    ########################
+#     Glambda for 1<t<2
+    IT1 = 1+x*t/2-x*t*log(2/t)-x*t^2/2
+    gIT1 = -diff(IT1, x)
+    IT2 = 1-x*t/2-x*t*log(2/t/x)-x*t^2/2+t
+    gIT2 = -diff(IT2, x)
+    IT3 = 0 
+    gIT3 = -diff(IT3, x)
+    
+    eeps = 10^(-10)
+    c=1; d = 2/t+eeps; # to avoid error if t = 2 
+    GIT1 = plot(gIT1,(x,0,c), color="red",zorder=1, plot_points=1800, \
+                thickness=tkn,
+        legend_label = \
+    r'$g_t(\lambda)=\frac{1}{2}t^2-\frac{1}{2}t-t\log(t/2)\quad\ \   \mathrm{if}\ 0\leq \lambda\leq 1$') 
+    GIT2 = plot(gIT2,(x,c,d), color="green",zorder=1, plot_points=1800, \
+                thickness=tkn,
+        legend_label = \
+    r'$g_t(\lambda)=\frac{1}{2}t^2-\frac{1}{2}t-t\log(\lambda t/2)\quad \mathrm{if}\ 1\leq \lambda< 2/t$')
+    GIP = point((d,(t*t/4)-(t/4)), color=(0.5,0.5,0.2), legend_label = r'$g_t(\lambda)=\frac{1}{4}t^2-\frac{1}{4}t\qquad\qquad\qquad\quad\ \mathrm{if} \lambda = 2/t$')
+    GIT3 = plot(gIT3,(x,d,bmax), color="magenta",zorder=1, plot_points=1800, \
+                thickness=tkn,\
+                legend_label = r'$g_t(\lambda)=0\qquad\qquad\qquad\qquad\qquad\ \  \mathrm{if}\  2/t< \lambda$')
+    ########################
+#     Glambda for 2/3<t<1
+    IIT1 = 1 +x*t -x*t^2 +3/2*x*t*log(t) - x*t*log(2)
+    gIIT1 = -diff(IIT1, x)
+    IIT2 = 1 +5*t -4*x*t -x*t^2 +t*(2+3*x)*log(x) +3/2*x*t*log(t) -x*t*log(2)
+    gIIT2 = -diff(IIT2, x)
+    IIT3 = -1 +3*t -2*x*t +x*t^2 +x*t*log(x/2) -t*(2+x/2)*log(t)
+    gIIT3 = -diff(IIT3, x)
+    IIT4 = -1 -2*t +x*t/2 +x*t^2 -t*(2+x/2)*log(x*t/2)
+    gIIT4 = -diff(IIT4, x)
+    IIT5 = 0
+    gIIT5 = -diff(IIT5, x)
+    h1 = 1; h2 = 1/t; h3 = 2; h4 = 2/t
+    COL =[(46/51, 35/51, 5/17), \
+        (4/17, 16/17, 6/17), (1, 15/17, 5/51), \
+        (0, 26/51, 40/51), (49/51, 26/51, 16/85), (29/51, 2/17, 12/17),\
+        (14/51, 16/17, 16/17)]
+    GIIT1 = plot(gIIT1,(x,0,h1), rgbcolor=COL[0],zorder=1, plot_points=1800, \
+                thickness=2,
+        legend_label = \
+    r'$g_t(\lambda)=t^2-t-\frac{3}{2}t\log(t)+t\log(2)\qquad\qquad\qquad\qquad\quad\   \mathrm{if}\ 0\leq \lambda\leq 1$') 
+    GIIT2 = plot(gIIT2,(x,h1,h2), rgbcolor=COL[1],zorder=1, plot_points=1800, \
+                thickness=tkn,
+        legend_label = \
+    r'$g_t(\lambda)=t^2+t-2t/\lambda -3t\log(\lambda)-\frac{3}{2}t\log(t)+t\log(2)\ \  \mathrm{if}\ 1\leq \lambda\leq \frac{1}{t}$') 
+    GIIT3 = plot(gIIT3,(x,h2,h3), rgbcolor=COL[2],zorder=1, plot_points=1800, \
+                thickness=tkn,
+        legend_label = \
+    r'$g_t(\lambda)=-t^2+t-t\log(\lambda/2)+\frac{1}{2}t\log(t)\qquad\qquad\qquad\quad \mathrm{if}\ \frac{1}{t}\leq \lambda\leq 2$') 
+    GIIT4 = plot(gIIT4,(x,h3,h4), rgbcolor=COL[5],zorder=1, plot_points=1800, \
+                thickness=tkn,
+        legend_label = \
+    r'$g_t(\lambda)=-t^2+2t/\lambda +\frac{1}{2}t\log(\lambda t/2)\qquad\qquad\qquad\qquad\quad\  \mathrm{if}\ \frac{1}{t}\leq \lambda\leq 2$') 
+    GIIT5 = plot(gIIT5,(x,h4,bmax), rgbcolor=COL[3],zorder=1, plot_points=1800, \
+                thickness=tkn,
+        legend_label = \
+    r'$g_t(\lambda)= 0\ \qquad\qquad\qquad\qquad \qquad\qquad\qquad\qquad\qquad\qquad\quad \mathrm{if}\ \frac{2}{t} \leq \lambda$') 
+    
+    
+    
+    ########################
+#     Draw e^{-lambda}
+    eMinusLambda = e^(-x)
+    GEML = plot(eMinusLambda,(x,0,10), rgbcolor=(0.86,0,0.06),zorder=1, \
+            legend_label =r'$e^{-\lambda}$',     
+                plot_points=1800, thickness=2)
+    T = text('$t=%.2f$'%t_label, (0.06, 0.06), color='black', fontsize=9,\
+            bounding_box={'boxstyle':'square', 'fc':'w', 'ec':"gray"},\
+            horizontal_alignment = "left")
+    ##########################
+    
+    if t>= 2:
+#         T = text('$t=%.2f$'%t_label, (b+0.2, 0.755), color='black', fontsize=12,\
+#             bounding_box={'boxstyle':'square', 'fc':'w', 'ec':"gray"})
+#         T = text('$t=%.2f$'%t_label, (0.2, 0.2), color='black', fontsize=12,\
+#             bounding_box={'boxstyle':'square', 'fc':'w', 'ec':"gray"})
+        AALL = GT1+GP+GT2+T
+        
+    if t> 1 and t <=2 :        
+#         T = text('$t=%.2f$'%t_label, (b+0.2, 0.755), color='black', fontsize=12,\
+#             bounding_box={'boxstyle':'square', 'fc':'w', 'ec':"gray"})
+#         AALL = GIT1+GIT2+GIT3+GT1+GT2+GE+T
+        AALL = GIT1+GIT2+GIP+GIT3+T
+    if t==1:
+        AALL = GIT1+GIT2+GIP+GIT3+T+GEML
+    if 2/3<t and t <1:
+        AALL = GIIT1+GIIT2+GIIT3+GIIT4+GIIT5+T
+    
+    if t<2/3:
+        AALL = GEML+T
+
+    show(AALL, axes=False,frame=True, xmax=3, #xmax=b+0.32,\
+            axes_labels=[r'$\lambda$',r'$g_t(\lambda)$'],\
+        axes_labels_size=1.3, figsize=8) #axes_labels_size=1.6 default
+
+### Interactive
+
+@interact
+def _(t=slider(0.67, 3.0, step_size=0.001, default=1.1), auto_update=false):
+    print("t=%.2f"%(t))
+    TogetherSquare(t)
+</script></div>
+
+</body>
 </html>
