@@ -23,6 +23,9 @@
   <body>
   <h1>Interactive 2d and 3d graphs of $G_t(\lambda)$ and $g_t(\lambda)$</h1>
 
+  A supplement to the paper "Distribution of Angles to Lattice Points Seen from a Fast Moving Observer" by Jack Anderson,
+  Florin P. Boca, Cristian Cobeli, and Alexandru Zaharescu.
+
 <h2>3d graph of $G_t(\lambda)$</h2>
 <p>Renders a 3d graph of $G_t(\lambda)$ for $2/3 < t < 4$ and $0 < \lambda < 5/2$ with different colours to resemble the different
     domains over which $G_t(\lambda)$ can be defined as a piece-wise function. You can drag the graph with your mouse to view
@@ -221,10 +224,8 @@ def DrawGlambdaSquares(G,uup):
     ## add only uup/2 above an [x,0] to deal with the optical ilusion/expectation
     GG = []
     for [x,y] in G:
-        if y>0:
-            GG.append([x,y+uup])
-        else:
-            GG.append([x,y+uup])
+        GG.append([x,y+uup])
+
     Punctele = line(GG,rgbcolor=pinkk, thickness=2,\
                        legend_label=r'$G^{*}_{t,J}(\lambda)$',\
                     #marker ="*",markersize =1.6,
@@ -375,6 +376,15 @@ def TogetherSquare(t,J,uup):
     show(AALL, axes=False,frame=True, xmax=3, #xmax=b+0.32,\
          axes_labels=[r'$\lambda$',r'$G_t(\lambda);\quad G^{*}_{t,J}(\lambda)$'],\
         axes_labels_size=1.3, figsize=8) #axes_labels_size=1.6 default
+
+    #### A string for the name of the file to save
+    if t>=1:
+        file_name = str(floor(t*100))
+    else:
+        file_name = "0"+ str(floor(t*100))
+    #AALL.save("Gte%s.pdf"%file_name, axes=False,frame=True, xmax=3, #xmax=b+0.32,\
+    #     axes_labels=[r'$\lambda$',r'$G_t(\lambda);\quad G^{*}_{t,J}(\lambda)$'],\
+    #    axes_labels_size=1.3, figsize=8) #axes_labels_size=1.6 default
 
 t=1/300; 
 
@@ -628,6 +638,15 @@ def TogetherSquare(t):
     show(AALL, axes=False,frame=True, xmax=3, #xmax=b+0.32,\
             axes_labels=[r'$\lambda$',r'$g_t(\lambda)$'],\
         axes_labels_size=1.3, figsize=8) #axes_labels_size=1.6 default
+
+    #### A string for the name of the file to save
+    if t>=1:
+        file_name = str(floor(t*100))
+    else:
+        file_name = "0"+ str(floor(t*100))
+    #AALL.save("gtd%s.pdf"%file_name, axes=False,frame=True, xmax=3, #xmax=b+0.32,\
+    #     axes_labels=[r'$\lambda$',r'$g_t(\lambda)$'],\
+    #    axes_labels_size=1.3, figsize=8) #axes_labels_size=1.6 default
 
 ### Interactive
 
